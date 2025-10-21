@@ -3,7 +3,7 @@ const { Service } = require('node-windows');
 const svc = new Service({
   name: 'Forlorn Clan Manager',
   description: 'HI I am the Manager for Forlorn Rivals Clan',
-  script: 'C:\\Users\\bluem\\Forlorn_Manager\\index.js'
+  script: 'C:\\Users\\bluem\\Forlorn_Manager\\src\\index.js'
 });
 
 svc.on('stop', () => {

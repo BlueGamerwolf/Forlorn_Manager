@@ -27,7 +27,7 @@ process.on('SIGTERM', stopBot);
 
 const svc = new Service({
   name: 'Forlorn Clan Manager',
-  script: 'C:\\Users\\bluem\\Forlorn_Manager\\index.js'
+  script: 'C:\\Users\\bluem\\Forlorn_Manager\\src\\index.js'
 });
 
 Service.exists('Forlorn Clan Manager', (exists) => {

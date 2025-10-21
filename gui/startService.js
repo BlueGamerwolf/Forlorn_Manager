@@ -2,7 +2,7 @@ const { Service } = require('node-windows');
 const svc = new Service({
   name: 'Forlorn Clan Manager',
   description: 'Manages the Forlorn Rivals Clan Discord bot',
-  script: 'C:\\Users\\bluem\\Forlorn_Manager\\index.js'
+  script: 'C:\\Users\\bluem\\Forlorn_Manager\\src\\index.js'
 });
 svc.on('install', () => {
   console.log('Service installed. Starting now...');

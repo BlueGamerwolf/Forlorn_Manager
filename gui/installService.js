@@ -1,7 +1,7 @@
 const { Service } = require('node-windows');
 const path = require('path');
 
-const BOT_PATH = path.join('C:\\', 'Users', 'bluem', 'Forlorn_Manager', 'index.js');
+const BOT_PATH = path.join('C:\\', 'Users', 'bluem', 'Forlorn_Manager', 'src', 'index.js');
 
 const svc = new Service({
   name: 'Forlorn Clan Manager',
