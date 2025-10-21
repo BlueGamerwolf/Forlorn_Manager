@@ -11,6 +11,7 @@
   <button id="startBtn">Start Bot</button>
   <button id="stopBtn">Stop Bot</button>
   <button id="restartBtn">Restart Bot</button>
+  <button id="deployBtn">Deploy Commands</button>
 
   <hr>
   <p>Scoreboard / Tryout Options (future dropdowns)</p>
@@ -27,17 +28,18 @@
     const startBtn = document.getElementById('startBtn');
     const stopBtn = document.getElementById('stopBtn');
     const restartBtn = document.getElementById('restartBtn');
+    const deployBtn = document.getElementById('deployBtn');
     const statusEl = document.getElementById('status');
+    const playerSelect = document.getElementById('playerSelect');
 
     startBtn.onclick = () => ipcRenderer.send('start-bot');
     stopBtn.onclick = () => ipcRenderer.send('stop-bot');
     restartBtn.onclick = () => ipcRenderer.send('restart-bot');
+    deployBtn.onclick = () => ipcRenderer.send('deploy-commands', playerSelect.value);
 
-    ipcRenderer.on('bot-status', (event, status) => {
-      statusEl.innerText = `Status: ${status}`;
-    });
+    ipcRenderer.on('bot-status', (_, status) => statusEl.innerText = `Status: ${status}`);
+    ipcRenderer.on('deploy-status', (_, msg) => statusEl.innerText = `Status: ${msg}`);
 
-    // request status on load
     ipcRenderer.send('get-status');
   </script>
 </body>

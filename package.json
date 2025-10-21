@@ -2,11 +2,12 @@
   "name": "forlorn_manager",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "gui": "electron gui.js"
-    
-  },
+  "gui": "electron gui/gui.js",
+  "start": "node src/index.js",
+  "deploy": "node src/deploy-commands.js"
+},
   "keywords": [],
   "author": "",
   "license": "ISC",
