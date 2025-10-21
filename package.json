@@ -1,0 +1,21 @@
+{
+  "name": "forlorn_manager",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "gui": "electron gui.js"
+    
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^14.22.1",
+    "dotenv": "^17.2.2",
+    "node-windows": "^1.0.0-beta.8"
+  },
+  "devDependencies": {
+    "electron": "^38.1.2"
+  }
+}

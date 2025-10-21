@@ -1,0 +1,9 @@
+.env
+/node_modules
+/daemon
+forlornclanmanager.err.log
+forlornclanmanager.exe
+forlornclanmanager.exe.config
+forlornclanmanager.out.log
+forlornclanmanager.wrapper.log
+forlornclanmanager.xml
