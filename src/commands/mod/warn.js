@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 const Warnings = require("/systems/Warnings");
-const Roles = require("/callbacks/roles/Roles");
+const Roles = require("/callback/roles/Roles");
 
 module.exports = {
   data: new SlashCommandBuilder()

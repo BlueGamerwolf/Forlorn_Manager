@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require("discord.js");
-const Channels = require("/callbacks/channels/Channels");
-const Roles = require("/callbacks/roles/Roles");
+const Channels = require("/callback/channels/Channels");
+const Roles = require("/callback/roles/Roles");
 require("dotenv").config();
 
 const warnings = new Map();

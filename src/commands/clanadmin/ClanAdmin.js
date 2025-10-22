@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const Roles = require('../callbacks/roles/Roles.js');
+const Roles = require('../callback/roles/Roles.js');
 
 module.exports = {
     data: new SlashCommandBuilder()

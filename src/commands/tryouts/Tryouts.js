@@ -1,5 +1,4 @@
-const { Roles } = require("../callbacks/roles/Roles");
-const { Users } = require("../callbacks/users/Users");
+const { Roles } = require("../callback/roles/Roles");
 
 module.exports = {
   name: "tryout",
@@ -30,8 +29,7 @@ module.exports = {
 
     const allowed =
       member.roles.cache.has(Roles.CLAN_TRYOUTS) ||
-      member.roles.cache.has(Roles.ADMIN) ||
-      member.id === Users.DJBLUE;
+      member.roles.cache.has(Roles.ADMIN)
 
     if (!allowed) {
       return interaction.reply({

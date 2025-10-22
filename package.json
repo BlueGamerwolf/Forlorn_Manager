@@ -4,7 +4,6 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-  "gui": "electron gui/gui.js",
   "start": "node src/index.js",
   "deploy": "node src/deploy-commands.js"
 },
