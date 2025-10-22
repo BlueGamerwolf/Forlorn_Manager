@@ -1,26 +1,26 @@
-const { Roles } = require("../callback/roles/Roles");
+const { SlashCommandBuilder } = require("discord.js");
+const { Roles } = require("../../callbacks/roles/Roles");
 
 module.exports = {
-  name: "tryout",
-  description: "Approve or deny tryouts for the clan.",
-  options: [
-    {
-      name: "user",
-      description: "User to approve or deny.",
-      type: 6,
-      required: true,
-    },
-    {
-      name: "action",
-      description: "approve or deny",
-      type: 3,
-      required: true,
-      choices: [
-        { name: "Approve", value: "approve" },
-        { name: "Deny", value: "deny" },
-      ],
-    },
-  ],
+  data: new SlashCommandBuilder()
+    .setName("tryout")
+    .setDescription("Approve or deny tryouts for the clan.")
+    .addUserOption(option =>
+      option
+        .setName("user")
+        .setDescription("User to approve or deny.")
+        .setRequired(true)
+    )
+    .addStringOption(option =>
+      option
+        .setName("action")
+        .setDescription("approve or deny")
+        .setRequired(true)
+        .addChoices(
+          { name: "Approve", value: "approve" },
+          { name: "Deny", value: "deny" }
+        )
+    ),
 
   async execute(interaction) {
     const member = interaction.member;
@@ -29,7 +29,7 @@ module.exports = {
 
     const allowed =
       member.roles.cache.has(Roles.CLAN_TRYOUTS) ||
-      member.roles.cache.has(Roles.ADMIN)
+      member.roles.cache.has(Roles.ADMIN);
 
     if (!allowed) {
       return interaction.reply({

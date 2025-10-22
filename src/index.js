@@ -1,10 +1,10 @@
 const fs = require('fs');
 const path = require('path');
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
-require('dotenv').config(); // load .env variables
-
+require('dotenv').config({ path: path.join(__dirname, '.env') });
+console.log("Loaded TOKEN prefix:", process.env.TOKEN?.slice(0, 10));
 const token = process.env.TOKEN; // Bot token from .env
-const Roles = require('/callbacks/roles/Roles.js'); // fixed relative path
+const Roles = require('./callbacks/roles/Roles.js'); // ✅ fixed relative path
 
 // Create client
 const client = new Client({
@@ -39,9 +39,10 @@ for (const folder of commandFolders) {
 }
 
 // Bot ready
-client.once('ready', () => {
-    console.log(`${client.user.tag} is online!`);
+client.on("clientReady", () => {
+  console.log(`${client.user.tag} is online!`);
 });
+
 
 // Interaction handler
 client.on('interactionCreate', async interaction => {
@@ -55,7 +56,10 @@ client.on('interactionCreate', async interaction => {
         await command.execute(interaction);
     } catch (error) {
         console.error(error);
-        await interaction.reply({ content: 'There was an error executing this command!', ephemeral: true });
+        await interaction.reply({
+            content: 'There was an error executing this command!',
+            ephemeral: true
+        });
     }
 });
 
