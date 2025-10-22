@@ -1,5 +1,5 @@
 module.exports = {
- LOGS: "1427295052740296827",
+  LOGS: "1427295052740296827",
   WARNINGS: "1427339082941595870",
 
   isStaffChannel(channelId) {
