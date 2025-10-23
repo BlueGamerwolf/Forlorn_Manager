@@ -3,10 +3,9 @@ const path = require('path');
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
 require('dotenv').config({ path: path.join(__dirname, '.env') });
 console.log("Loaded TOKEN prefix:", process.env.TOKEN?.slice(0, 10));
-const token = process.env.TOKEN; // Bot token from .env
-const Roles = require('./callbacks/roles/Roles.js'); // ✅ fixed relative path
+const token = process.env.TOKEN;
+const Roles = require('./callbacks/roles/Roles.js');
 
-// Create client
 const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
@@ -16,10 +15,8 @@ const client = new Client({
     ]
 });
 
-// Collection for commands
 client.commands = new Collection();
 
-// Dynamically load all commands
 const commandsPath = path.join(__dirname, 'commands');
 const commandFolders = fs.readdirSync(commandsPath);
 
@@ -38,13 +35,11 @@ for (const folder of commandFolders) {
     }
 }
 
-// Bot ready
 client.on("clientReady", () => {
   console.log(`${client.user.tag} is online!`);
 });
 
 
-// Interaction handler
 client.on('interactionCreate', async interaction => {
     if (!interaction.isChatInputCommand()) return;
 
@@ -63,5 +58,4 @@ client.on('interactionCreate', async interaction => {
     }
 });
 
-// Log in bot
 client.login(token);

@@ -1,4 +1,4 @@
-require('dotenv').config({ path: './src/.env' }); // explicitly point to your .env
+require('dotenv').config({ path: './src/.env' });
 const { REST, Routes } = require('discord.js');
 
 const clientId = process.env.CLIENT_ID;
