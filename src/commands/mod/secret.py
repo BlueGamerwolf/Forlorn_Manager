@@ -11,9 +11,9 @@ class SecretCommand(commands.Cog):
     async def secret(self, interaction: discord.Interaction):
         admin_role = int(ROLES["CLAN_ADMIN"])
         if any(role.id == admin_role for role in interaction.user.roles):
-            await interaction.response.send_message(f"Welcome, Admin 👑 ({interaction.user.display_name})")
+            await interaction.response.send_message(f"Welcome, Admin ({interaction.user.display_name})")
         else:
-            await interaction.response.send_message("❌ You do not have permission to use this command.")
+            await interaction.response.send_message("You do not have permission to use this command.")
 
 async def setup(bot):
     await bot.add_cog(SecretCommand(bot))

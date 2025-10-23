@@ -11,9 +11,9 @@ TOKEN = os.getenv("TOKEN")
 GUILD_ID = int(os.getenv("GUILD_ID"))
 
 if TOKEN is None:
-    print("❌ TOKEN not found in .env file!")
+    print("TOKEN not found in .env file!")
 else:
-    print("✅ TOKEN loaded successfully.")
+    print("TOKEN loaded successfully.")
 
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix=None, intents=intents)
@@ -21,10 +21,10 @@ guild = discord.Object(id=GUILD_ID)
 
 @bot.event
 async def on_ready():
-    print(f"🤖 Logged in as {bot.user}")
+    print(f"Logged in as {bot.user}")
     await bot.tree.clear_commands(guild=guild)
     await bot.tree.sync(guild=guild)
-    print(f"✅ Slash commands synced for guild {GUILD_ID}")
+    print(f"Slash commands synced for guild {GUILD_ID}")
 
 async def load_extensions():
     extensions = [
@@ -39,9 +39,9 @@ async def load_extensions():
     for ext in extensions:
         try:
             await bot.load_extension(ext)
-            print(f"✅ Loaded {ext}")
+            print(f"Loaded {ext}")
         except Exception as e:
-            print(f"❌ Failed to load {ext}: {e}")
+            print(f"Failed to load {ext}: {e}")
 
 async def main():
     async with bot:

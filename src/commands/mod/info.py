@@ -14,7 +14,7 @@ class InfoCommand(commands.Cog):
         invite = os.getenv("INVITE")
 
         await interaction.response.send_message(
-            f"📋 **Bot Info:**\n"
+            f"**Bot Info:**\n"
             f"Client ID: `{client_id}`\n"
             f"Guild ID: `{guild_id}`\n"
             f"Invite: {invite}"

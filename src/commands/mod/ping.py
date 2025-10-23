@@ -8,7 +8,7 @@ class PingCommand(commands.Cog):
 
     @app_commands.command(name="ping", description="Check if the bot is online")
     async def ping(self, interaction: discord.Interaction):
-        await interaction.response.send_message("🏓 Pong! Bot is online.")
+        await interaction.response.send_message("Pong! Bot is online.")
 
 async def setup(bot):
     await bot.add_cog(PingCommand(bot))
