@@ -1,7 +1,10 @@
 import json
 import os
 
-WARN_FILE = "warnings.json"
+JSON_FOLDER = os.path.join(os.path.dirname(__file__), "..", "json")
+os.makedirs(JSON_FOLDER, exist_ok=True)
+
+WARN_FILE = os.path.join(JSON_FOLDER, "warnings.json")
 
 def load_warnings():
     if os.path.exists(WARN_FILE):

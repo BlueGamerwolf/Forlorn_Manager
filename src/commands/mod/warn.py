@@ -1,57 +1,81 @@
 import discord
+from discord import app_commands
 from discord.ext import commands
-from utils.warnings import add_warning, get_warnings
+from utils.warnings import add_warning, get_warnings, save_warnings, load_warnings
+from callbacks.roles.roles import ROLES
 import os
 
 INVITE_LINK = os.getenv("INVITE_LINK")
 
-# Load punishments dynamically from .env
-punishments_raw = os.getenv("PUNISHMENTS", "3:smite,5:kick,7:ban")
-punishments = {}
-for item in punishments_raw.split(","):
-    try:
-        warn_count, action = item.split(":")
-        punishments[int(warn_count)] = action.lower()
-    except ValueError:
-        continue  # skip invalid entries
-
 class WarnCommand(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.bot.add_listener(self.on_member_unban)
 
-    @commands.command(name="warn")
-    @commands.has_permissions(manage_messages=True)
-    async def warn(self, ctx, member: discord.Member, *, reason="No reason provided"):
+    @app_commands.command(name="warn", description="Warn a user")
+    @app_commands.describe(member="The member to warn", reason="Reason for warning")
+    async def warn(self, interaction: discord.Interaction, member: discord.Member, reason: str = "No reason provided"):
         count, reasons = add_warning(member.id, reason)
-        await ctx.send(f"{member.mention} has been warned. Total warnings: {count}")
+        await interaction.response.send_message(f"{member.mention} has been warned. Total warnings: {count}")
 
-        # Check punishments dynamically
+        await interaction.followup.send(f"*smite* {member.mention} {reason}")
+
+        punishments = {}
+        raw = os.getenv("PUNISHMENTS", "")
+        for item in raw.split(","):
+            try:
+                warn_count, action = item.split(":")
+                punishments[int(warn_count)] = action.lower()
+            except ValueError:
+                continue
+
         if count in punishments:
             action = punishments[count]
-            if action == "smite":
-                await ctx.send(f"*smite* {member.mention} {reason}")
-            elif action == "kick":
-                await member.kick(reason="Reached warning limit")
-                await ctx.send(f"{member.mention} has been kicked!")
+
+            if action == "kick":
+                await member.kick(reason=f"Reached {count} warnings")
+                await interaction.followup.send(f"{member.mention} has been kicked!")
                 try:
-                    await member.send(f"You were kicked from the server. Rejoin here: {INVITE_LINK}")
+                    await member.send(f"You were kicked. Rejoin: {INVITE_LINK}")
                 except:
                     pass
+
             elif action == "ban":
-                await member.ban(reason="Reached warning limit")
-                await ctx.send(f"{member.mention} has been banned!")
+                await member.ban(reason=f"Reached {count} warnings")
+                await interaction.followup.send(f"{member.mention} has been banned!")
 
-    async def on_member_unban(self, guild, user):
-        try:
-            await user.send(f"You have been unbanned from {guild.name}. Rejoin here: {INVITE_LINK}")
-        except:
-            pass
+                data = load_warnings()
+                user_id = str(member.id)
+                if user_id not in data:
+                    data[user_id] = {"count": count, "reasons": [reason], "banned": True}
+                else:
+                    data[user_id]["banned"] = True
+                    if "banned_reasons" not in data[user_id]:
+                        data[user_id]["banned_reasons"] = []
+                    data[user_id]["banned_reasons"].append(reason)
+                save_warnings(data)
 
-    @commands.command(name="warnings")
-    async def warnings(self, ctx, member: discord.Member):
+            elif action.startswith("mute"):
+                duration = action.split(":")[1] if ":" in action else None
+                mute_role_id = int(ROLES.get("ROLE_TO_MUTE", 0))
+                mute_role = discord.utils.get(interaction.guild.roles, id=mute_role_id)
+                if mute_role:
+                    await member.add_roles(mute_role, reason=f"Muted for reaching {count} warnings")
+                    msg = f"{member.mention} has been muted"
+                    if duration:
+                        msg += f" for {duration}"
+                    msg += "!"
+                    await interaction.followup.send(msg)
+
+    @app_commands.command(name="warnings", description="Check a user's warnings")
+    @app_commands.describe(member="The member to check")
+    async def warnings(self, interaction: discord.Interaction, member: discord.Member):
         data = get_warnings(member.id)
-        await ctx.send(f"{member.mention} has {data['count']} warnings. Reasons: {data['reasons']}")
+        banned_status = "Yes" if data.get("banned") else "No"
+        banned_reasons = data.get("banned_reasons", [])
+        await interaction.response.send_message(
+            f"{member.mention} has {data['count']} warnings. Reasons: {data['reasons']}\n"
+            f"Banned: {banned_status}. Ban reasons: {banned_reasons}"
+        )
 
 async def setup(bot):
     await bot.add_cog(WarnCommand(bot))
